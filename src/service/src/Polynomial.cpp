@@ -84,6 +84,7 @@ std::string Polynomial::show() const noexcept {
 
 Polynomial &Polynomial::operator*=(const Polynomial &rhs) noexcept {
     *this = *this * rhs;
+    return *this;
 }
 
 Polynomial operator*(const Polynomial &lhs, const Polynomial &rhs) noexcept {

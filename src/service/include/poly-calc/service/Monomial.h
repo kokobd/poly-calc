@@ -45,6 +45,7 @@ public:
 
     Monomial &negate() noexcept {
         coefficient = -coefficient;
+        return *this;
     }
 
 private:
