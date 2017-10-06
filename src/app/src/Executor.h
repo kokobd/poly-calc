@@ -18,6 +18,8 @@ class Command;
 class Evaluator;
 
 class Executor {
+private:
+    std::map<std::string, std::shared_ptr<Service::Polynomial>> storedPolys;
 public:
     Executor();
 
@@ -27,12 +29,14 @@ public:
         return commands;
     }
 
+    decltype(storedPolys) &getStoredPolys() { return storedPolys; }
+
+    const decltype(storedPolys) &getStoredPolys() const { return storedPolys; }
+
 private:
     std::vector<std::shared_ptr<Command>> commands;
 
     std::shared_ptr<Evaluator> evaluator;
-
-    std::map<std::string, std::shared_ptr<Service::Polynomial>> storedPolys;
 
     void config();
 };

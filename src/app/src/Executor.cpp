@@ -6,6 +6,7 @@
 
 #include "commands/Quit.h"
 #include "commands/Help.h"
+#include "commands/Show.h"
 
 namespace Zelinf {
 namespace PolyCalc {
@@ -49,7 +50,8 @@ Executor::Executor() {
 void Executor::config() {
     commands = {
             std::make_shared<Commands::Quit>(*this),
-            std::make_shared<Commands::Help>(*this)
+            std::make_shared<Commands::Help>(*this),
+            std::make_shared<Commands::Show>(*this)
     };
 }
 

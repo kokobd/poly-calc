@@ -19,10 +19,14 @@ std::string Help::run(std::vector<std::string> args) {
     os << "Available commands:\n";
     for (auto cmd_pt : executor.getCommands()) {
         os << "\t:";
-        for (const auto &name : cmd_pt->names()) {
-            os << name << ' ';
+        std::vector<std::string> names = cmd_pt->names();
+        for (size_t i = 0; i < names.size(); i++) {
+            os << names[i];
+            if (i != names.size() - 1) {
+                os << '|';
+            }
         }
-        os << "-- " << cmd_pt->helpInfo() << '\n';
+        os << " --> " << cmd_pt->helpInfo() << '\n';
     }
     os << "Statement Syntax(TODO):\n";
     // TODO

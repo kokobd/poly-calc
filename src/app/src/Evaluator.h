@@ -18,7 +18,7 @@ class Executor;
 // interface
 class Evaluator {
 public:
-    Evaluator(Executor &executor) : executor(executor) {}
+    explicit Evaluator(Executor &executor) : executor(executor) {}
 
     virtual std::string evaluate(const std::string &) = 0;
 
