@@ -12,7 +12,10 @@ add_executable(${PROJECT_NAME}
         src/commands/Help.h
         src/commands/Help.cpp
         src/commands/Show.h
-        src/commands/Show.cpp)
+        src/commands/Show.cpp
+
+        src/expression/SimpleEvaluator.h
+        src/expression/SimpleEvaluator.cpp)
 
 target_link_libraries(${PROJECT_NAME}
         poly-calc-service

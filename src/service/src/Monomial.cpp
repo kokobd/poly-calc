@@ -8,7 +8,7 @@ namespace PolyCalc {
 namespace Service {
 
 std::int64_t Monomial::evaluate(int64_t var) const noexcept {
-    int result = 1;
+    int64_t result = 1;
     int64_t exp = exponent;
     while (exp != 0) {
         if ((exp & 1) != 0)
