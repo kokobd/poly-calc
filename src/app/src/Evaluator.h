@@ -13,12 +13,17 @@ class Polynomial;
 
 namespace App {
 
+class Executor;
+
 // interface
 class Evaluator {
 public:
-    virtual void setStoredPolys(std::map<std::string, std::shared_ptr<Service::Polynomial>> &) = 0;
+    Evaluator(Executor &executor) : executor(executor) {}
 
     virtual std::string evaluate(const std::string &) = 0;
+
+protected:
+    Executor &executor;
 };
 
 }

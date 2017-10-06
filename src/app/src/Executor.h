@@ -3,8 +3,6 @@
 #include <memory>
 #include <vector>
 #include <map>
-#include "Command.h"
-#include "Evaluator.h"
 
 namespace Zelinf {
 namespace PolyCalc {
@@ -15,10 +13,19 @@ class Polynomial;
 
 namespace App {
 
+class Command;
+
+class Evaluator;
+
 class Executor {
 public:
     Executor();
+
     std::string execute(const std::string &input);
+
+    const std::vector<std::shared_ptr<Command>> getCommands() const {
+        return commands;
+    }
 
 private:
     std::vector<std::shared_ptr<Command>> commands;

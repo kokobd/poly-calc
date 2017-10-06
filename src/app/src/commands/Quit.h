@@ -16,11 +16,15 @@ class QuitExcept : public std::exception {
 
 class Quit : public Command {
 public:
+    explicit Quit(Executor &executor) : Command(executor) {}
+
     std::vector<std::string> names() const override {
         return {"quit", "q"};
     }
 
     std::string run(std::vector<std::string> args) override;
+
+    std::string helpInfo() const override;
 };
 
 }

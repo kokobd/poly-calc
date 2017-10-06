@@ -1,9 +1,11 @@
 #include "Executor.h"
 #include <sstream>
 #include <algorithm>
-#include <sstream>
 #include <fmt/format.h>
+#include "Evaluator.h"
+
 #include "commands/Quit.h"
+#include "commands/Help.h"
 
 namespace Zelinf {
 namespace PolyCalc {
@@ -46,7 +48,8 @@ Executor::Executor() {
  */
 void Executor::config() {
     commands = {
-            std::make_shared<Commands::Quit>()
+            std::make_shared<Commands::Quit>(*this),
+            std::make_shared<Commands::Help>(*this)
     };
 }
 
