@@ -7,6 +7,7 @@
 #include "commands/Quit.h"
 #include "commands/Help.h"
 #include "commands/Show.h"
+#include "expression/SimpleEvaluator.h"
 
 namespace Zelinf {
 namespace PolyCalc {
@@ -53,6 +54,7 @@ void Executor::config() {
             std::make_shared<Commands::Help>(*this),
             std::make_shared<Commands::Show>(*this)
     };
+    evaluator = std::make_shared<Expression::SimpleEvaluator>(*this);
 }
 
 }

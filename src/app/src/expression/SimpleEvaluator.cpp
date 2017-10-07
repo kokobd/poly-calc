@@ -1,11 +1,20 @@
 #include "SimpleEvaluator.h"
 #include <algorithm>
 #include <cctype>
+#include <stdexcept>
+#include <sstream>
+#include <fmt/format.h>
+#include "../Executor.h"
 
 namespace Zelinf {
 namespace PolyCalc {
 namespace App {
 namespace Expression {
+
+class ParseError : public std::runtime_error {
+public:
+    explicit ParseError(const std::string &what) : std::runtime_error(what) {}
+};
 
 std::string removeSpaces(const std::string &str) {
     std::string result;
@@ -26,20 +35,53 @@ std::string SimpleEvaluator::evaluate(const std::string &input_) {
     std::string value_part;
     if (input.back() == ']') {
         size_t beg_value_part = input.find_last_of('[');
-        value_part = input.substr(beg_value_part);
-        input.erase(beg_value_part, input.size() - beg_value_part);
+        if (beg_value_part == std::string::npos || beg_value_part == input.size() - 1) {
+            value_part = "";
+        } else {
+            value_part = input.substr(beg_value_part + 1, input.size() - beg_value_part - 2);
+            input.erase(beg_value_part, input.size() - beg_value_part);
+        }
     }
 
+    std::string expr;
+    std::string expr_name;
+
     size_t first_equal_sign = input.find('=');
-    // if the next character is still '=', means we have "=="
-    if (input.size() > first_equal_sign + 1 && input[first_equal_sign + 1] == '=') {
-        // TODO
-        // pass 'input' directly to parser
+    if (first_equal_sign == std::string::npos) {
+        expr = std::move(input);
     } else {
-        // TODO
-        // split around '=', pass the right part to parser,
-        // then assign it to the left part (as an identifier)
+        expr_name = input.substr(0, first_equal_sign);
+        expr = input.substr(first_equal_sign + 1);
     }
+
+    std::ostringstream result;
+    try {
+        auto poly = parse(expr);
+        result << poly->show();
+        if (!expr_name.empty()) {
+            if (std::all_of(expr_name.cbegin(), expr_name.cend(), [](char ch) {
+                return std::isalpha(ch);
+            })) {
+                executor.getStoredPolys()[expr_name] = poly;
+            } else {
+                result << fmt::format("'{}' is not a valid identifier. All identifiers"
+                                              "must be consist of english letters, and"
+                                              "can not be a single 'x'.", expr_name);
+            }
+        }
+    } catch (ParseError &e) {
+        result << e.what();
+    }
+    result << '\n';
+    return result.str();
+}
+
+std::shared_ptr<Service::Polynomial> SimpleEvaluator::parse(const std::string &str) {
+    return std::make_shared<Service::Polynomial>(
+            std::initializer_list<Service::Monomial>(
+                    {{1, 2},
+                     {1}}));
+    // TODO implement Shunting-Yard Algorithm.
 }
 
 }

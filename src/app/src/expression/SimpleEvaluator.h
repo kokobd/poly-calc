@@ -2,6 +2,7 @@
 
 #include <memory>
 #include "../Evaluator.h"
+#include <poly-calc/service/Polynomial.h>
 
 namespace Zelinf {
 namespace PolyCalc {
@@ -14,6 +15,8 @@ public:
 
     std::string evaluate(const std::string &input) override;
 
+private:
+    std::shared_ptr<Service::Polynomial> parse(const std::string &str);
 };
 
 }
