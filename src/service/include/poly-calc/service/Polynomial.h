@@ -37,6 +37,10 @@ public:
 
     int64_t evaluate(int64_t var) const noexcept;
 
+    bool isConstant() const noexcept {
+        return monos.size() == 1 && monos.cbegin()->isConstant();
+    }
+
 private:
     static std::function<bool(const Monomial &lhs, const Monomial &rhs)> mono_cmp;
 

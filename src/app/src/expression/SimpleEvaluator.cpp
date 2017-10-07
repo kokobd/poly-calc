@@ -5,16 +5,12 @@
 #include <sstream>
 #include <fmt/format.h>
 #include "../Executor.h"
+#include "ParseError.h"
 
 namespace Zelinf {
 namespace PolyCalc {
 namespace App {
 namespace Expression {
-
-class ParseError : public std::runtime_error {
-public:
-    explicit ParseError(const std::string &what) : std::runtime_error(what) {}
-};
 
 std::string removeSpaces(const std::string &str) {
     std::string result;
@@ -58,6 +54,17 @@ std::string SimpleEvaluator::evaluate(const std::string &input_) {
     try {
         auto poly = parse(expr);
         result << poly->show();
+
+        if (!value_part.empty()) {
+            std::istringstream reader(value_part);
+            int64_t value;
+            if (reader >> value) {
+                result << fmt::format(" [x={}]={}", value, poly->evaluate(value));
+            }
+        }
+
+        result << '\n';
+
         if (!expr_name.empty()) {
             if (std::all_of(expr_name.cbegin(), expr_name.cend(), [](char ch) {
                 return std::isalpha(ch);
@@ -66,13 +73,13 @@ std::string SimpleEvaluator::evaluate(const std::string &input_) {
             } else {
                 result << fmt::format("'{}' is not a valid identifier. All identifiers"
                                               "must be consist of english letters, and"
-                                              "can not be a single 'x'.", expr_name);
+                                              "can not be a single 'x'.\n", expr_name);
             }
         }
     } catch (ParseError &e) {
         result << e.what();
+        result << '\n';
     }
-    result << '\n';
     return result.str();
 }
 
