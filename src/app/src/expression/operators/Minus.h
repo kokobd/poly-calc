@@ -10,12 +10,16 @@ namespace Operators {
 
 class Minus : public BiOperator {
 public:
-    int64_t precedence() override {
+    int64_t precedence() const override {
         return 1;
     }
 
-    bool leftAssoc() override {
+    bool leftAssoc() const override {
         return true;
+    }
+
+    char symbol() const override {
+        return '-';
     }
 
     std::shared_ptr<Service::Polynomial>

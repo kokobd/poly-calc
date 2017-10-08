@@ -17,6 +17,7 @@ public:
 
 private:
     std::shared_ptr<Service::Polynomial> parse(const std::string &str);
+
 };
 
 }

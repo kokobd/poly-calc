@@ -10,7 +10,7 @@ namespace App {
 namespace Expression {
 namespace Operators {
 
-std::vector<std::shared_ptr<BiOperator>> BiOperator::defaultOperators(
+const std::vector<std::shared_ptr<BiOperator>> BiOperator::defaultOperators(
         {
                 std::make_shared<Plus>(),
                 std::make_shared<Minus>(),

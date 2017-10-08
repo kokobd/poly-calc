@@ -16,15 +16,17 @@ namespace Operators {
 
 class BiOperator {
 public:
-    virtual int64_t precedence() = 0;
+    virtual int64_t precedence() const = 0;
 
-    virtual bool leftAssoc() = 0;
+    virtual bool leftAssoc() const = 0;
+
+    virtual char symbol() const = 0;
 
     virtual std::shared_ptr<Service::Polynomial> apply(
             std::shared_ptr<Service::Polynomial> lhs,
             std::shared_ptr<Service::Polynomial> rhs) = 0;
 
-    static std::vector<std::shared_ptr<BiOperator>> defaultOperators;
+    static const std::vector<std::shared_ptr<BiOperator>> defaultOperators;
 };
 }
 
