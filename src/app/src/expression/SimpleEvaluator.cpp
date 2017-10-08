@@ -10,6 +10,8 @@
 #include <map>
 #include <cstdlib>
 #include "operators/BiOperator.h"
+#include <mapbox/variant.hpp>
+#include <poly-calc/service/Polynomial.h>
 
 namespace Zelinf {
 namespace PolyCalc {
@@ -96,22 +98,20 @@ std::map<char, std::shared_ptr<Operators::BiOperator>> defaultSymbols() {
     return symbols;
 }
 
-enum class TokenType {
-    BiOp, // BiOperator
-    Num, // Integer
-    Var, // Variable
-    L_P, // left parentheses
-    R_P // right parentheses
+struct LeftParens {
+
 };
 
-struct Token {
-    union {
-        std::shared_ptr<Operators::BiOperator> biOp;
-        int64_t num;
-        std::string var;
-    };
-    TokenType type;
+struct RightParens {
+
 };
+
+using Token = mapbox::util::variant<
+        std::shared_ptr<Operators::BiOperator>,
+        int64_t,
+        std::string,
+        LeftParens,
+        RightParens>;
 
 /**
  * Convert input string into a vector of tokens.
@@ -124,31 +124,30 @@ std::vector<Token> tokenize(const std::string &str) {
     for (auto it = str.cbegin(); it != str.cend();) {
         Token tok;
         if (*it == '(') {
-            tok.type = TokenType::L_P;
+            tok = LeftParens();
             ++it;
         } else if (*it == ')') {
-            tok.type = TokenType::R_P;
+            tok = RightParens();
             ++it;
         } else if (std::isdigit(*it)) {
-            tok.type = TokenType::Num;
             std::string num;
             while (std::isdigit(*it) && it != str.cend()) {
                 num.push_back(*it);
                 ++it;
             }
-            tok.num = std::atoi(num.c_str());
+            tok = std::atoi(num.c_str());
         } else if (std::isalpha(*it)) {
-            tok.type = TokenType::Var;
+            std::string var;
             while (std::isalpha(*it) && it != str.cend()) {
-                tok.var.push_back(*it);
+                var.push_back(*it);
                 ++it;
             }
+            tok = var;
         } else {
             bool valid = false;
             for (const auto &p : defaultSymbols()) {
                 if (*it == p.first) {
-                    tok.type = TokenType::BiOp;
-                    tok.biOp = p.second;
+                    tok = p.second;
                     valid = true;
                 }
             }
@@ -162,16 +161,108 @@ std::vector<Token> tokenize(const std::string &str) {
     return result;
 }
 
+void applyOperatorToOutStack(std::shared_ptr<Operators::BiOperator> op,
+                             std::stack<std::shared_ptr<Service::Polynomial>> &outStack) {
+    if (outStack.size() < 2) {
+        throw ParseError(fmt::format("Too less operands for {}", op->symbol()));
+    }
+    std::shared_ptr<Service::Polynomial> rhs = outStack.top();
+    outStack.pop();
+    std::shared_ptr<Service::Polynomial> lhs = outStack.top();
+    outStack.pop();
+    outStack.push(op->apply(lhs, rhs));
+}
+
 std::shared_ptr<Service::Polynomial> SimpleEvaluator::parse(const std::string &str) {
     using namespace Operators;
     std::stack<std::shared_ptr<Service::Polynomial>> outStack;
-    std::stack<std::shared_ptr<BiOperator>> opStack;
+    std::stack<Token> opStack;
 
-    if (str.empty()) {
-        throw ParseError("The expression is empty.");
+    std::vector<Token> tokens = tokenize(str);
+    if (tokens.empty()) {
+        throw ParseError("No tokens found.");
     }
 
+    for (const Token &tok : tokens) {
+        tok.match(
+                [&opStack](LeftParens p) {
+                    opStack.push(Token(p));
+                },
+                [&opStack, &outStack](RightParens p) {
+                    bool parensMatch = false;
+                    while (!opStack.empty() && !(parensMatch = opStack.top().is<LeftParens>())) {
+                        applyOperatorToOutStack(opStack.top().get<std::shared_ptr<BiOperator>>(), outStack);
+                        opStack.pop();
+                    }
+                    if (parensMatch) {
+                        opStack.pop();
+                    } else {
+                        throw ParseError("Parentheses mismatch.");
+                    }
+                },
+                [this, &outStack](const std::string &var) {
+                    std::shared_ptr<Service::Polynomial> result;
+                    if (var == "x") {
+                        result = std::make_shared<Service::Polynomial>(
+                                std::initializer_list<Service::Monomial>{{1, 1}});
+                    } else {
+                        auto it = executor.getStoredPolys().find(var);
+                        if (it == executor.getStoredPolys().cend()) {
+                            throw ParseError(fmt::format("{} is not a stored polynomial.", var));
+                        } else {
+                            result = it->second;
+                        }
+                    }
+                    outStack.push(result);
+                },
+                [&outStack](int64_t num) {
+                    std::shared_ptr<Service::Polynomial> result =
+                            std::make_shared<Service::Polynomial>(
+                                    std::initializer_list<Service::Monomial>({num})
+                            );
+                    outStack.push(result);
+                },
+                [&opStack, &outStack](std::shared_ptr<BiOperator> op) {
+                    while (!opStack.empty()) {
+                        Token top = opStack.top();
+                        if (top.is<LeftParens>()) {
+                            break;
+                        }
+                        if (top.is<std::shared_ptr<BiOperator>>()) {
+                            auto top_precedence = top.get<std::shared_ptr<BiOperator>>()->precedence();
+                            if (op->leftAssoc()) {
+                                if (top_precedence < op->precedence()) {
+                                    break;
+                                }
+                            } else {
+                                if (top_precedence <= op->precedence()) {
+                                    break;
+                                }
+                            }
+                            applyOperatorToOutStack(opStack.top().get<std::shared_ptr<BiOperator>>(), outStack);
+                            opStack.pop();
+                        } else {
+                            throw std::logic_error("Impossible code path");
+                        }
+                    }
+                    opStack.push(op);
+                });
+    }
 
+    while (!opStack.empty()) {
+        Token &top = opStack.top();
+        if (top.is<LeftParens>()) {
+            throw ParseError("Parentheses mismatch.");
+        }
+        applyOperatorToOutStack(top.get<std::shared_ptr<BiOperator>>(), outStack);
+        opStack.pop();
+    }
+
+    if (outStack.size() == 1) {
+        return outStack.top();
+    } else {
+        throw ParseError("Too many operands.");
+    }
 }
 
 }

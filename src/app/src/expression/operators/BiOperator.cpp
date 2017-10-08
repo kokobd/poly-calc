@@ -18,6 +18,10 @@ const std::vector<std::shared_ptr<BiOperator>> BiOperator::defaultOperators(
         }
 );
 
+BiOperator::~BiOperator() {
+
+}
+
 }
 }
 }

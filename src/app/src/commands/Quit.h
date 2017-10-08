@@ -25,6 +25,8 @@ public:
     std::string run(std::vector<std::string> args) override;
 
     std::string helpInfo() const override;
+
+    ~Quit() override = default;
 };
 
 }

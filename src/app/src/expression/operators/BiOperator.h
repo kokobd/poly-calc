@@ -26,6 +26,8 @@ public:
             std::shared_ptr<Service::Polynomial> lhs,
             std::shared_ptr<Service::Polynomial> rhs) = 0;
 
+    virtual ~BiOperator() = 0;
+
     static const std::vector<std::shared_ptr<BiOperator>> defaultOperators;
 };
 }

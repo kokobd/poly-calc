@@ -6,6 +6,7 @@ add_executable(${PROJECT_NAME}
         src/Executor.cpp
         src/Evaluator.h
         src/Command.h
+        src/Command.cpp
 
         src/commands/Quit.h
         src/commands/Quit.cpp
@@ -31,4 +32,5 @@ add_executable(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
         poly-calc-service
-        fmt)
+        fmt
+        variant)

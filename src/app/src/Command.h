@@ -19,6 +19,8 @@ public:
 
     virtual std::string helpInfo() const = 0;
 
+    virtual ~Command() = 0;
+
 protected:
     Executor &executor;
 };

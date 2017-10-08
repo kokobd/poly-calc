@@ -24,6 +24,8 @@ public:
 
     std::shared_ptr<Service::Polynomial>
     apply(std::shared_ptr<Service::Polynomial> lhs, std::shared_ptr<Service::Polynomial> rhs) override;
+
+    ~Multiply() override = default;
 };
 
 }
