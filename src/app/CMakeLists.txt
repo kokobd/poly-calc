@@ -28,6 +28,8 @@ add_executable(${PROJECT_NAME}
         src/expression/operators/Multiply.cpp
         src/expression/operators/Derivation.h
         src/expression/operators/Derivation.cpp
+        src/expression/operators/Power.h
+        src/expression/operators/Power.cpp
         )
 
 target_link_libraries(${PROJECT_NAME}

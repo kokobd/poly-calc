@@ -35,6 +35,8 @@ public:
 
     Polynomial &derivation(int64_t times) noexcept;
 
+    Polynomial power(int64_t exponent) const;
+
     int64_t evaluate(int64_t var) const noexcept;
 
     bool isConstant() const noexcept {

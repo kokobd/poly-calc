@@ -119,6 +119,24 @@ Polynomial &Polynomial::derivation(int64_t times) noexcept {
     return *this;
 }
 
+Polynomial Polynomial::power(int64_t exponent) const {
+    if (exponent < 0) {
+        throw std::invalid_argument("exponent must be non-negative");
+    }
+    Polynomial result({{1}});
+    Polynomial temp = *this;
+    while (exponent != 0) {
+        bool multiplyTemp = static_cast<bool>(exponent % 2);
+        if (multiplyTemp) {
+            result *= temp;
+        }
+        temp *= temp;
+        exponent >>= 1;
+    }
+
+    return result;
+}
+
 }
 }
 }

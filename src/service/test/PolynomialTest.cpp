@@ -54,18 +54,30 @@ TEST_CASE("Polynomial") {
     }
 
     SECTION("derivation") {
-        Polynomial p1 = {{1, 3},
+        Polynomial p1 = {{1,  3},
                          {-2, 5}};
-        REQUIRE(Polynomial({{3,  2},
+        REQUIRE(Polynomial({{3,   2},
                             {-10, 4}}) == p1.derivation(1));
         REQUIRE(Polynomial({0}) == p1.derivation(6));
     }
 
     SECTION("evaluate") {
-        Polynomial p1 = {{1, 3}, {-2, 5}};
+        Polynomial p1 = {{1,  3},
+                         {-2, 5}};
         REQUIRE(-459 == p1.evaluate(3));
         REQUIRE(0 == p1.evaluate(0));
         REQUIRE(-1 == p1.evaluate(1));
         REQUIRE(1 == p1.evaluate(-1));
+    }
+
+    SECTION("power") {
+        Polynomial p1 = {{1, 1},
+                         {-1}};
+        REQUIRE(Polynomial({{1,  3},
+                            {-3, 2},
+                            {3,  1},
+                            {-1}}) == p1.power(3));
+        REQUIRE(Polynomial({{1}}) == p1.power(0));
+        REQUIRE_THROWS_AS(p1.power(-1), std::invalid_argument);
     }
 }
