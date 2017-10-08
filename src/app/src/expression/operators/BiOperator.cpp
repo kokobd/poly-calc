@@ -14,7 +14,8 @@ const std::vector<std::shared_ptr<BiOperator>> BiOperator::defaultOperators(
         {
                 std::make_shared<Plus>(),
                 std::make_shared<Minus>(),
-                std::make_shared<Multiply>()
+                std::make_shared<Multiply>(),
+                std::make_shared<Derivation>()
         }
 );
 
