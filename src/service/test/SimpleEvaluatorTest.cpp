@@ -28,5 +28,9 @@ TEST_CASE("SimpleEvaluator") {
         REQUIRE("1\n" == evaluator->evaluate("(2*x - 1)^(x - x)"));
         REQUIRE("2x-1\n" == evaluator->evaluate("(2*x - 1)^(x'1 + x - x)"));
         REQUIRE("20x^3\n" == evaluator->evaluate("(x^5)'2"));
+        REQUIRE_NOTHROW(evaluator->evaluate("x^x"));
+        REQUIRE_NOTHROW(evaluator->evaluate("x^(0-1)"));
+        REQUIRE_NOTHROW(evaluator->evaluate("x'x"));
+        REQUIRE_NOTHROW(evaluator->evaluate("x'(0-1)"));
     }
 }

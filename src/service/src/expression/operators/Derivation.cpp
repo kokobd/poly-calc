@@ -16,8 +16,8 @@ Derivation::apply(std::shared_ptr<Poly::Polynomial> lhs,
         throw std::invalid_argument("NullPointerException");
     }
 
-    if (!rhs->isConstant()) {
-        throw ParseError("The second argument of ' can not be non-constant");
+    if (!rhs->isConstant() || rhs->evaluate(0) < 0) {
+        throw ParseError("The second argument of must be non-negative constant");
     } else {
         std::shared_ptr<Poly::Polynomial> result = std::make_shared<Poly::Polynomial>(*lhs);
         result->derivation(rhs->evaluate(0));
