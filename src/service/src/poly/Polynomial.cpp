@@ -1,8 +1,9 @@
-#include <poly-calc/service/Polynomial.h>
+#include <poly-calc/service/poly/Polynomial.h>
 
 namespace Zelinf {
 namespace PolyCalc {
 namespace Service {
+namespace Poly {
 
 std::function<bool(const Monomial &lhs, const Monomial &rhs)> Polynomial::mono_cmp(
         [](const Monomial &lhs, const Monomial &rhs) -> bool {
@@ -34,6 +35,9 @@ Polynomial &Polynomial::operator+=(const Polynomial &rhs) noexcept {
         }
     }
 
+    if (monos.empty()) {
+        monos.insert(0);
+    }
     return *this;
 }
 
@@ -64,7 +68,7 @@ Polynomial &Polynomial::operator-=(const Polynomial &rhs) noexcept {
 
 Polynomial operator-(const Polynomial &lhs, const Polynomial &rhs) noexcept {
     Polynomial result = lhs;
-    result += rhs;
+    result -= rhs;
     return result;
 }
 
@@ -84,6 +88,7 @@ std::string Polynomial::show() const noexcept {
 
 Polynomial &Polynomial::operator*=(const Polynomial &rhs) noexcept {
     *this = *this * rhs;
+    return *this;
 }
 
 Polynomial operator*(const Polynomial &lhs, const Polynomial &rhs) noexcept {
@@ -118,6 +123,25 @@ Polynomial &Polynomial::derivation(int64_t times) noexcept {
     return *this;
 }
 
+Polynomial Polynomial::power(int64_t exponent) const {
+    if (exponent < 0) {
+        throw std::invalid_argument("exponent must be non-negative");
+    }
+    Polynomial result({{1}});
+    Polynomial temp = *this;
+    while (exponent != 0) {
+        bool multiplyTemp = static_cast<bool>(exponent % 2);
+        if (multiplyTemp) {
+            result *= temp;
+        }
+        temp *= temp;
+        exponent >>= 1;
+    }
+
+    return result;
+}
+
+}
 }
 }
 }

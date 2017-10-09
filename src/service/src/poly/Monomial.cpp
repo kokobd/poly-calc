@@ -1,4 +1,4 @@
-#include <poly-calc/service/Monomial.h>
+#include <poly-calc/service/poly/Monomial.h>
 #include <stdexcept>
 #include <fmt/format.h>
 #include <cmath>
@@ -6,9 +6,10 @@
 namespace Zelinf {
 namespace PolyCalc {
 namespace Service {
+namespace Poly {
 
 std::int64_t Monomial::evaluate(int64_t var) const noexcept {
-    int result = 1;
+    int64_t result = 1;
     int64_t exp = exponent;
     while (exp != 0) {
         if ((exp & 1) != 0)
@@ -104,6 +105,7 @@ Monomial &Monomial::derivation(int64_t times) noexcept {
     return *this;
 }
 
+}
 }
 }
 }

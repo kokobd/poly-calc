@@ -1,7 +1,7 @@
 #include <catch/catch.hpp>
-#include <poly-calc/service/Polynomial.h>
+#include <poly-calc/service/poly/Polynomial.h>
 
-using namespace Zelinf::PolyCalc::Service;
+using namespace Zelinf::PolyCalc::Service::Poly;
 
 namespace Catch {
 template<>
@@ -41,6 +41,11 @@ TEST_CASE("Polynomial") {
                             {3, 1}}) == p2 + p3);
     }
 
+    SECTION("operator-") {
+        REQUIRE(Polynomial({{0}}) == Polynomial({{1, 1}}) - Polynomial({{1, 1}}));
+        REQUIRE(Polynomial({{2, 1}}) == Polynomial({{1, 1}}) - Polynomial({{-1, 1}}));
+    }
+
     SECTION("operator*") {
         REQUIRE(Polynomial({0}) == Polynomial({0}) * Polynomial({{2, 3},
                                                                  {1, 2}}));
@@ -54,18 +59,30 @@ TEST_CASE("Polynomial") {
     }
 
     SECTION("derivation") {
-        Polynomial p1 = {{1, 3},
+        Polynomial p1 = {{1,  3},
                          {-2, 5}};
-        REQUIRE(Polynomial({{3,  2},
+        REQUIRE(Polynomial({{3,   2},
                             {-10, 4}}) == p1.derivation(1));
         REQUIRE(Polynomial({0}) == p1.derivation(6));
     }
 
     SECTION("evaluate") {
-        Polynomial p1 = {{1, 3}, {-2, 5}};
+        Polynomial p1 = {{1,  3},
+                         {-2, 5}};
         REQUIRE(-459 == p1.evaluate(3));
         REQUIRE(0 == p1.evaluate(0));
         REQUIRE(-1 == p1.evaluate(1));
         REQUIRE(1 == p1.evaluate(-1));
+    }
+
+    SECTION("power") {
+        Polynomial p1 = {{1, 1},
+                         {-1}};
+        REQUIRE(Polynomial({{1,  3},
+                            {-3, 2},
+                            {3,  1},
+                            {-1}}) == p1.power(3));
+        REQUIRE(Polynomial({{1}}) == p1.power(0));
+        REQUIRE_THROWS_AS(p1.power(-1), std::invalid_argument);
     }
 }
