@@ -1,9 +1,9 @@
 #include <iostream>
 #include <string>
-#include "Executor.h"
+#include "poly-calc/service/Executor.h"
 
 int main() {
-    using namespace Zelinf::PolyCalc::App;
+    using namespace Zelinf::PolyCalc::Service;
 
     Executor exec;
 

@@ -1,7 +1,7 @@
 #include <catch/catch.hpp>
-#include <poly-calc/service/Monomial.h>
+#include <poly-calc/service/poly/Monomial.h>
 
-using namespace Zelinf::PolyCalc::Service;
+using namespace Zelinf::PolyCalc::Service::Poly;
 
 namespace Catch {
 template<>
