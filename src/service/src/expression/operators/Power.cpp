@@ -1,5 +1,6 @@
 #include <poly-calc/service/expression/operators/Power.h>
 #include <poly-calc/service/poly/Polynomial.h>
+#include <poly-calc/service/expression/ParseError.h>
 
 namespace Zelinf {
 namespace PolyCalc {
@@ -13,8 +14,8 @@ Power::apply(std::shared_ptr<Poly::Polynomial> lhs,
     if (lhs == nullptr || rhs == nullptr) {
         throw std::invalid_argument("NullPointerException");
     }
-    if (!rhs->isConstant()) {
-        throw std::invalid_argument("Right-hand operand for '^' must be constant");
+    if (!rhs->isConstant() || rhs->evaluate(0) < 0) {
+        throw ParseError("Right-hand operand for '^' must be non-negative constant");
     }
     return std::make_shared<Poly::Polynomial>(lhs->power(rhs->evaluate(0)));
 }
