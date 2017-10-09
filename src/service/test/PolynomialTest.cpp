@@ -41,6 +41,11 @@ TEST_CASE("Polynomial") {
                             {3, 1}}) == p2 + p3);
     }
 
+    SECTION("operator-") {
+        REQUIRE(Polynomial({{0}}) == Polynomial({{1, 1}}) - Polynomial({{1, 1}}));
+        REQUIRE(Polynomial({{2, 1}}) == Polynomial({{1, 1}}) - Polynomial({{-1, 1}}));
+    }
+
     SECTION("operator*") {
         REQUIRE(Polynomial({0}) == Polynomial({0}) * Polynomial({{2, 3},
                                                                  {1, 2}}));

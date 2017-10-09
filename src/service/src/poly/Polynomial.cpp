@@ -35,6 +35,9 @@ Polynomial &Polynomial::operator+=(const Polynomial &rhs) noexcept {
         }
     }
 
+    if (monos.empty()) {
+        monos.insert(0);
+    }
     return *this;
 }
 
@@ -65,7 +68,7 @@ Polynomial &Polynomial::operator-=(const Polynomial &rhs) noexcept {
 
 Polynomial operator-(const Polynomial &lhs, const Polynomial &rhs) noexcept {
     Polynomial result = lhs;
-    result += rhs;
+    result -= rhs;
     return result;
 }
 

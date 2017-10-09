@@ -48,7 +48,9 @@ set(TEST_NAME ${LIBNAME}-test)
 add_executable(${TEST_NAME}
         test/TestMain.cpp
         test/MonomialTest.cpp
-        test/PolynomialTest.cpp)
+        test/PolynomialTest.cpp
+        test/SimpleEvaluatorTest.cpp
+        )
 target_link_libraries(${TEST_NAME}
         catch
         ${LIBNAME})
