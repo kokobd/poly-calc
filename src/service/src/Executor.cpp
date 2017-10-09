@@ -8,6 +8,7 @@
 #include <poly-calc/service/commands/Help.h>
 #include <poly-calc/service/commands/Show.h>
 #include <poly-calc/service/expression/SimpleEvaluator.h>
+#include <poly-calc/service/commands/Equals.h>
 
 namespace Zelinf {
 namespace PolyCalc {
@@ -54,7 +55,8 @@ void Executor::config() {
     commands = {
             std::make_shared<Commands::Quit>(*this),
             std::make_shared<Commands::Help>(*this),
-            std::make_shared<Commands::Show>(*this)
+            std::make_shared<Commands::Show>(*this),
+            std::make_shared<Commands::Equals>(*this)
     };
     evaluator = std::make_shared<Expression::SimpleEvaluator>(*this);
 }

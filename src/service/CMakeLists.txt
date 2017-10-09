@@ -11,6 +11,7 @@ add_library(${LIBNAME}
         include/poly-calc/service/commands/Help.h
         include/poly-calc/service/commands/Show.h
         include/poly-calc/service/commands/Quit.h
+        include/poly-calc/service/commands/Equals.h
         include/poly-calc/service/expression/BiOperator.h
         include/poly-calc/service/expression/ParseError.h
         include/poly-calc/service/expression/SimpleEvaluator.h
@@ -27,6 +28,7 @@ add_library(${LIBNAME}
         src/commands/Help.cpp
         src/commands/Quit.cpp
         src/commands/Show.cpp
+        src/commands/Equals.cpp
         src/expression/SimpleEvaluator.cpp
         src/expression/operators/BiOperator.cpp
         src/expression/operators/Derivation.cpp

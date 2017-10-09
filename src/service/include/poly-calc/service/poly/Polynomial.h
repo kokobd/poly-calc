@@ -91,6 +91,16 @@ public:
     }
 
     /**
+     * Negation of operator==
+     * @param lhs The left-hand symbol.
+     * @param rhs The right-hand symbol.
+     * @return true if lhs doesn't equal rhs
+     */
+    friend bool operator!=(const Polynomial &lhs, const Polynomial &rhs) noexcept {
+        return !(lhs == rhs);
+    }
+
+    /**
      * Computes the derivation. The result is stored in
      * *this.
      * @param times The derivation order.
