@@ -56,14 +56,14 @@ test_script:
 #
 
 artifacts:
-  - path: build/src/app/Release/poly-calc-app-{platform}.exe
+  - path: build/src/app/Release/poly-calc-app-${platform}.exe
     name: poly-calc-app
     type: File
 
 # Deployment
 deploy:
   - provider: GitHub
-    release: poly-calc-{branch}
+    release: poly-calc-${branch}
     description: 'A simple polynomial calculator'
     auth_token:
       secure: wCLCNSQ1gr1PWkBxxhfkeTdWCjdmChy3C/yl0w0iYCB6OThAnJZWUHL442xj77yd
