@@ -47,6 +47,8 @@ Executor::Executor() {
  * This function adds all classes in 'commands' sub-folder
  * to commands, choose a default implementation of Evaluator
  * from sub-folder 'expression'.
+ * If we had reflection, we should use it. However we don't bother
+ * introduce a reflection library for now.
  */
 void Executor::config() {
     commands = {
