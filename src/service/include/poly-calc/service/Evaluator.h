@@ -21,6 +21,8 @@ public:
 
     virtual std::string evaluate(const std::string &) = 0;
 
+    virtual std::string helpInfo() = 0;
+
 protected:
     Executor &executor;
 };

@@ -1,6 +1,7 @@
 #include <poly-calc/service/commands/Help.h>
 #include <sstream>
 #include <poly-calc/service/Executor.h>
+#include <poly-calc/service/Evaluator.h>
 
 namespace Zelinf {
 namespace PolyCalc {
@@ -28,8 +29,8 @@ std::string Help::run(std::vector<std::string> args) {
         }
         os << " --> " << cmd_pt->helpInfo() << '\n';
     }
-    os << "Statement Syntax(TODO):\n";
-    // TODO
+    os << "Statement Syntax:\n";
+    os << executor.getEvaluator()->helpInfo() << '\n';
 
     return os.str();
 }

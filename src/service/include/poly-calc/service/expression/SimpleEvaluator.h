@@ -15,6 +15,8 @@ public:
 
     std::string evaluate(const std::string &input) override;
 
+    std::string helpInfo() override;
+
 private:
     std::shared_ptr<Poly::Polynomial> parse(const std::string &str);
 

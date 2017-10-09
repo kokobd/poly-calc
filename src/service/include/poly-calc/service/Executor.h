@@ -64,6 +64,8 @@ public:
      */
     const decltype(storedPolys) &getStoredPolys() const { return storedPolys; }
 
+    std::shared_ptr<Evaluator> getEvaluator() { return evaluator; }
+
 private:
     std::vector<std::shared_ptr<Command>> commands;
 

@@ -265,6 +265,26 @@ std::shared_ptr<Poly::Polynomial> SimpleEvaluator::parse(const std::string &str)
     }
 }
 
+std::string SimpleEvaluator::helpInfo() {
+    std::string info = "Example: p = (3*q - 1)^2 * (2*x + 1) [5]\n"
+            "The expression is divided into three parts:\n"
+            "\t1. 'p = ' associates the name p with the expression\n"
+            "\t2. '(3*q - 1)^2 * (2*x + 1)' the expression\n"
+            "\t3. '[5]' the value of the variable 'x'\n"
+            "You may omit part 1 or part 3, or both, if you want.\n"
+            "Independent variable is denoted as 'x'. Any combination of english letters"
+            " could be a valid expression name, and it can be used directly in another"
+            " expression, if it has been stored.\n"
+            "A list of supported operators: (for precedence, larger is higher)\n"
+            "Operator     Symbol  Precedence  Associativity\n"
+            "  plus         +         1           left\n"
+            "  minus        -         1           left\n"
+            " multiply      *         2           left\n"
+            "  power        ^         3           right\n"
+            "derivation     '         4           left";
+    return info;
+}
+
 }
 }
 }
