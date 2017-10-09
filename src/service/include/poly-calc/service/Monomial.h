@@ -66,25 +66,25 @@ public:
 
 	/**
 	 * Get the coefficient.
-	 * @returns the coefficient.
+	 * @return the coefficient.
 	 */
     int64_t getCoefficient() const noexcept { return coefficient; }
 
 	/**
 	 * Get the exponent.
-	 * @returns the exponent.
+	 * @return the exponent.
 	 */
     int64_t getExponent() const noexcept { return exponent; }
 
 	/**
 	 * Adds another monomial to *this.
-	 * @returns a reference to *this
+	 * @return a reference to *this
 	 */
     Monomial &operator+=(const Monomial &rhs);
 
 	/**
 	 * Adds two monomial together.
-	 * @returns a new monomial represents the sum.
+	 * @return a new monomial represents the sum.
 	 */
     friend Monomial operator+(const Monomial &lhs, const Monomial &rhs);
 
@@ -92,13 +92,13 @@ public:
 	 * Calculates the n'th order derivation. The result is stored
 	 * directly in *this.
 	 * @param the derivation order.
-	 * @returns a reference to *this.
+	 * @return a reference to *this.
 	 */
     Monomial &derivation(int64_t times) noexcept;
 
 	/**
 	 * Negates the current monomial.
-	 * @returns a reference to *this.
+	 * @return a reference to *this.
 	 */
     Monomial &negate() noexcept {
         coefficient = -coefficient;
