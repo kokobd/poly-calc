@@ -63,7 +63,7 @@ artifacts:
 # Deployment
 deploy:
   - provider: GitHub
-    release: poly-calc-${branch}
+    release: ${APPVEYOR_REPO_BRANCH}
     description: 'A simple polynomial calculator'
     auth_token:
       secure: wCLCNSQ1gr1PWkBxxhfkeTdWCjdmChy3C/yl0w0iYCB6OThAnJZWUHL442xj77yd
