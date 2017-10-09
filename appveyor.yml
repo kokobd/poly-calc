@@ -26,6 +26,7 @@ environment:
 
 platform:
   - Win32
+  - x64
 
 configuration:
   - Release
@@ -38,7 +39,10 @@ build:
 before_build:
   - mkdir build
   - cd build
-  - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 14 2015" ..
+  - 'cmake -DCMAKE_GENERATOR_PLATFORM=%PLATFORM% ..'
+
+after_build:
+  - 'ren %APPVEYOR_BUILD_FOLDER%\build\src\app\Release\poly-calc-app.exe poly-calc-app-%PLATFORM%.exe'
 
 #
 # Tests
@@ -51,23 +55,24 @@ test_script:
 # After
 #
 
-#artifacts:
-#  - path: build/src/app-cli/Release/bank-calling-app.exe
-#    name: bank-calling-app
-#    type: File
+artifacts:
+  - path: build/src/app/Release/poly-calc-app-{platform}.exe
+    name: poly-calc-app
+    type: File
 
 # Deployment
-#deploy:
-#  release: bank-calling-v$(appveyor_build_version)
-#  description: 'A bank-calling simulation program'
-#  provider: GitHub
-#  auth_token:
-#    secure: wCLCNSQ1gr1PWkBxxhfkeTdWCjdmChy3C/yl0w0iYCB6OThAnJZWUHL442xj77yd
-#  artifact: bank-calling-app
-#  draft: false
-#  prerelease: false
-#  on:
-#    branch:
-#      - master
-#      - v0.3.2
-#    appveyor_repo_tag: true
+deploy:
+  - provider: GitHub
+    release: poly-calc-{branch}
+    description: 'A simple polynomial calculator'
+    auth_token:
+      secure: wCLCNSQ1gr1PWkBxxhfkeTdWCjdmChy3C/yl0w0iYCB6OThAnJZWUHL442xj77yd
+    artifact: poly-calc-app
+    draft: true
+    prerelease: false
+    on:
+      branch: /v\d\.\d\.\d/
+      appveyor_repo_tag: true
+
+#on_finish:
+#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
