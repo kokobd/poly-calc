@@ -14,6 +14,7 @@ matrix:
       env:
         - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
 
+# Install tools
 before_install:
   - eval "${MATRIX_EVAL}"
   - mkdir build && cd build
@@ -23,7 +24,21 @@ before_install:
   - CMAKE=`pwd`/${CMAKE_RELEASE_NAME}/bin/cmake
   - CTEST=`pwd`/${CMAKE_RELEASE_NAME}/bin/ctest
 
+# Build the project
 script:
   - ${CMAKE} -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=g++-5 -DCMAKE_C_COMPILER=gcc-5 ..
   - make
   - ${CTEST}
+
+before_deploy:
+  - APP_PATH="`pwd`/src/app/poly-calc-app"
+  - GITHUB_API_KEY="Rdq2Lg5fKuARaxDem8FJcXRy4FkW2BocCmymLLRJrTI+Y1zk7LVaXS56e8+LiAZ8YOU7ZRQToWOEIIIqspIejXI+QP0TGLEfeifCEj9F/qm5OwH4tnDdHCaX/iYa17OE2KZ3W5gXExHrx2JelCo1VgvmLmhjeFRwH9P6zaBII7IRl6zrR9p1bIZBQZSPy3ybGEGdox4raqKqx7jQJchJlcLB852F2SNuutnAMNptEOER8jefRvOHihBcxN5Bj025Cy4U3pauz/SSbILm/62oWJggqcHl+8u/g17jWeX/v/nSyNxmKBWnArMedwO5rvcePbUF+8oFVSNQtQZuZFzt8zRgBbOKEMVUCIMx9qsfW+k1jvfDQKtkedxmupXfE6YHCN2XIwxKaviViQsysCsnXqjX2jaE/mEc10FbfGwqe8lEe2cWKCMQkYYIBqxL48eQaf2QyYiaGDkBToH01F/2UJ5uP8qtwQ9t3ICK2InOlXw3ZDwXwnpJDiBrK/L4Z1y4B0JuerYZTinAOzInma8bUsX8b/hXTMmhsyYwr9uMNzZKcOkZ3wAOlTe5k7WJvF1kgCwAjjBCrhQaBAIJ6tghuYRDsCL0SCLL0s+rdwxbieIvFIOXj8SzesY4P9OZGvLbvo/ud2TUCTWCcXw3NzwGCBqQ4jFIoZx4YhuzDd6vnXY="
+
+deploy:
+  provider: releases
+  api_key:
+    secure: ${GITHUB_API_KEY}
+  file: ${APP_PATH}
+  skip_cleanup: true
+  on:
+    tags: true

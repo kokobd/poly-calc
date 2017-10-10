@@ -68,7 +68,7 @@ deploy:
     auth_token:
       secure: wCLCNSQ1gr1PWkBxxhfkeTdWCjdmChy3C/yl0w0iYCB6OThAnJZWUHL442xj77yd
     artifact: poly-calc-app
-    draft: true
+    draft: false
     prerelease: false
     on:
       branch: /v\d\.\d\.\d/
