@@ -30,13 +30,14 @@ script:
 - "${CTEST}"
 
 before_deploy:
-- APP_PATH="`pwd`/src/app/poly-calc-app"
+- APP_PATH="`pwd`/src/app"
+- mv ${APP_PATH}/poly-calc-app ${APP_PATH}/poly-calc-app-linux-x64
 
 deploy:
   provider: releases
   api_key:
     secure: bFLWhmvKuMHCqFDBVktNApotMEM1bGWIzXuo7NsgjS/bOE/rGbEOzQqVFT3dYshrVorN6gMGQKY4dWTXF0lXhGRUEdEhWh/0ozwjoM2bQwdwR7YyR6treq1VuZ9XbTbOTyetAwl1vplfhVbyFw9uyZSHuhCq1WGEpZ5hPrCOA2b5faq3Acxr0OCPbsscwApWtqdwOzRyF7I2ZW5q7nniKVhLZas9GCdO//98s66N6hCsHDeZXaZJkj78+urTZKN2b0jk6fR5zfmEjGJlPgNsHahbifDO5gQrtT0u/btN0Qu+lZj+aXOXdSC0xedI0l+LdOt3CzZa0XInDvfJK78KuW5GGTpRAvCrwZsMuYlyVh05Vc0pTCzUknprNrKIGqDk/zFqTvzqAGSrG3e1w2J0CR0Mtx5+SBYnK78G5shwhuGsLbwYQY2DLkPfNmq7iMCeiaTiV7LUm4iKJL6sH83HnBwww8yaT+zjxxnpuINLkM+znW4z3BoaZDcy2Gsvm6AscIauUHTQJnEAsVaBkEO/ZUpP/XM55FEU2e1m2QHAoslQTZZ8GoH5bSo5XqoXcWoVv91YNQ0P35FMvd/EKwd/bp3uvd7Sgj3jTwKitvR8pYuNQMm3p4QFIoOcfZ3G3T/TlJOUo1L+Nq0gQYS5r9bdampJg87OYOQ3G2S4yRz2+Jw=
-  file: "${APP_PATH}"
+  file: "${APP_PATH}/poly-calc-app-linux-x64"
   skip_cleanup: true
   on:
     tags: true
