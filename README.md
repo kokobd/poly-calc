@@ -3,7 +3,8 @@ Build status for master branch
 
 |CI Platform|Status|
 |:-:|:-:|
-|AppVeyor|![](https://ci.appveyor.com/api/projects/status/github/zelinf/poly-calc?branch=master)|
+|AppVeyor|![Build Status](https://ci.appveyor.com/api/projects/status/github/zelinf/poly-calc?branch=master)|
+|Travis CI|![Build Status](https://travis-ci.org/zelinf/poly-calc.svg?branch=master)|
 
 A calculator for single variable polynomials.(64 bit integer value)
 
